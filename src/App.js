@@ -9,33 +9,48 @@ class App extends Component {
 
     this.state = {
       movies: [],
-      baseMovie: ''
+      value: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    fetch('https://api.themoviedb.org/3/movie/550?api_key=2301535fa250c0bcc1f89c74b2a2a9b4')
-      .then(response => response.json())
-      .then(apiData => {
-        const movies = []
-          this.setState({
-            movies,
-            baseMovie: apiData.original_title
-          })
-        })
-        .catch(err => console.log(err))
-      }
+  // componentDidMount() {
+  //
+  //   fetch('https://api.themoviedb.org/3/search/movie?query=%' + this.state.value + '%&api_key=2301535fa250c0bcc1f89c74b2a2a9b4')
+  //     .then(response => response.json())
+  //     .then(movies => {
+  //         this.setState({
+  //           movies
+  //         })
+  //       })
+  //       .catch(err => console.log(err))
+  //     }
 
       handleChange(event) {
         this.setState({value: event.target.value});
       }
 
       handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
+        // alert('A name was submitted: ' + this.state.value);
+        // componentDidMount() {
+        fetch('https://api.themoviedb.org/3/search/movie?query=%' + this.state.value + '%&api_key=2301535fa250c0bcc1f89c74b2a2a9b4')
+          .then(response => response.json())
+          .then(movies => {
+            console.log('movies ', movies);
+              this.setState({
+                movies: movies,
+                movieTitle: movies.results[0].title,
+                overview: movies.results[0].overview,
+                backdrop: movies.results[0].backdrop_path,
+                poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
+                //value: movies.results[0].title.slice(-1)
+              })
+            })
+            .catch(err => console.log(err))
+          // }
+          event.preventDefault();
       }
 
   render() {
@@ -48,13 +63,7 @@ return (
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <ul>
-          <li>{this.state.baseMovie}</li>
-          {console.log(this.state.baseMovie)}
-          {//use this prop syntax when importing
-            //<li movie={this.state.baseMovie}>{this.state.baseMovie}</li>
-          }
-        </ul>
+
         <form onSubmit={this.handleSubmit}>
            <label>
              Movie:
@@ -62,6 +71,17 @@ return (
            </label>
            <input type="submit" value="Submit" />
          </form>
+
+         <ul>
+           <li>{this.state.movieTitle}</li>
+           <li>{this.state.overview}</li>
+           <li>{this.state.backdrop}</li>
+           <img className="img-responsive" src={this.state.poster}/>
+           {/* {this.state.map((movie, index) => (
+             <li key={index}>{movie.movies.results[0].title}</li>
+           ))} */}
+         </ul>
+
       </div>
     );
   }
