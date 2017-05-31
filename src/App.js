@@ -11,7 +11,10 @@ class App extends Component {
       movies: [],
       userInput: '',
       score: 0,
-      usedMovies: ''
+      usedMovies: '',
+      // firstLetterOfLastWord: '',
+      // lastLetterOfWord: ''
+      relevantLetter: 'H'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -19,7 +22,12 @@ class App extends Component {
   }
 
       handleChange(event) {
-        this.setState({userInput: event.target.value});
+        this.setState({
+          userInput: event.target.value
+        });
+        if (event.target.value[0] !== this.state.relevantLetter) {
+          alert("Hey! You can't change that first letter! Put that " + this.state.relevantLetter + " back in there! Nice try pal!")
+        }
       }
 
       handleSubmit(event) {
@@ -28,7 +36,8 @@ class App extends Component {
           .then(response => response.json())
           .then(movies => {
             var input = movies.results[0].title
-            console.log('input for movies with a space ', input);
+            //var userInput = this.state.userInput
+            //var firstLetterOfUserInput = userInput[0]
             //prevents using the same movie twice
             if (this.state.usedMovies.includes(input)) {
               alert('Hey! You already used that one! Game over pal!'),
@@ -40,7 +49,10 @@ class App extends Component {
                 poster: '',
                 userInput: '',
                 score: 0,
-                usedMovies: ''
+                usedMovies: '',
+                // firstLetterOfLastWord: '',
+                // lastLetterOfWord: '',
+                relevantLetter: ''
               })
             }
             //if movie title is multiple words, the next movie must
@@ -62,7 +74,10 @@ class App extends Component {
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
                 userInput: firstLetterOfLastWord,
                 score: this.state.score+1,
-                usedMovies: this.state.usedMovies + ' ' + input
+                usedMovies: this.state.usedMovies + ' ' + input,
+                // firstLetterOfLastWord: firstLetterOfLastWord,
+                // lastLetterOfWord: '',
+                relevantLetter: firstLetterOfLastWord
               })
             } else { //if movie is one word, use last letter for next turn
               var input = movies.results[0].title
@@ -78,7 +93,10 @@ class App extends Component {
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
                 userInput: lastLetterOfWord,
                 score: this.state.score+1,
-                usedMovies: this.state.usedMovies + ' ' + input
+                usedMovies: this.state.usedMovies + ' ' + input,
+                // firstLetterOfLastWord: '',
+                // lastLetterOfWord: lastLetterOfWord,
+                relevantLetter: lastLetterOfWord
               })
             }
             })
@@ -91,7 +109,11 @@ class App extends Component {
                 backdrop: '',
                 poster: '',
                 userInput: '',
-                score: 0
+                score: 0,
+                usedMovies: '',
+                // firstLetterOfLastWord: '',
+                // lastLetterOfWord: '',
+                relevantLetter: ''
               })
             })
           event.preventDefault();
