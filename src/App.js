@@ -28,9 +28,12 @@ class App extends Component {
             var input = movies.results[0].title
             console.log('input for movies with a space ', input);
             if (input.includes(' ')) {
-              //var removeDigits = /[0-9]/g
-              //var highRegString = input.toUpperCase().replace(removeDigits, '');
-              var splitString = input.split(' ');
+              var removeDigits = /[0-9]/g
+              var highRegString = input.toUpperCase().replace(removeDigits, '');
+              var splitString = highRegString.split(' ');
+              if (splitString.includes('')) {
+                splitString.splice(-1, 1);
+              }
               var lastWord = splitString[splitString.length -1];
               var firstLetterOfLastWord = lastWord[0];
               this.setState({
@@ -44,7 +47,9 @@ class App extends Component {
             } else {
               var input = movies.results[0].title
               console.log('input ', input)
-              var lastLetterOfWord = input[input.length -1];
+              var removeDigits = /[0-9]/g
+              var highRegString = input.toUpperCase().replace(removeDigits, '');
+              var lastLetterOfWord = highRegString[highRegString.length -1];
               this.setState({
                 movies: movies,
                 movieTitle: movies.results[0].title,
