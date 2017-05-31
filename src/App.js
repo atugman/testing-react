@@ -10,7 +10,8 @@ class App extends Component {
     this.state = {
       movies: [],
       userInput: '',
-      score: 0
+      score: 0,
+      usedMovies: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,7 +29,23 @@ class App extends Component {
           .then(movies => {
             var input = movies.results[0].title
             console.log('input for movies with a space ', input);
-            if (input.includes(' ')) {
+            //prevents using the same movie twice
+            if (this.state.usedMovies.includes(input)) {
+              alert('Hey! You already used that one! Game over pal!'),
+              this.setState({
+                movies: '',
+                movieTitle: '',
+                overview: '',
+                backdrop: '',
+                poster: '',
+                userInput: '',
+                score: 0,
+                usedMovies: ''
+              })
+            }
+            //if movie title is multiple words, the next movie must
+            //use the first letter of the last word of original movie
+            else if (input.includes(' ')) {
               var removeDigits = /[0-9]/g
               var highRegString = input.toUpperCase().replace(removeDigits, '');
               var splitString = highRegString.split(' ');
@@ -44,9 +61,10 @@ class App extends Component {
                 backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
                 userInput: firstLetterOfLastWord,
-                score: this.state.score+1
+                score: this.state.score+1,
+                usedMovies: this.state.usedMovies + ' ' + input
               })
-            } else {
+            } else { //if movie is one word, use last letter for next turn
               var input = movies.results[0].title
               console.log('input ', input)
               var removeDigits = /[0-9]/g
@@ -59,7 +77,8 @@ class App extends Component {
                 backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
                 userInput: lastLetterOfWord,
-                score: this.state.score+1
+                score: this.state.score+1,
+                usedMovies: this.state.usedMovies + ' ' + input
               })
             }
             })
