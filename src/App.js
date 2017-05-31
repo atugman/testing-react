@@ -9,12 +9,12 @@ class App extends Component {
 
     this.state = {
       movies: [],
-      userInput: '',
+      userInput: 'A',
       score: 0,
       usedMovies: '',
       // firstLetterOfLastWord: '',
       // lastLetterOfWord: ''
-      relevantLetter: 'H'
+      relevantLetter: 'A'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -55,6 +55,33 @@ class App extends Component {
                 relevantLetter: ''
               })
             }
+            else if (input.includes('The')) {
+              var removeDigits = /[0-9]/g
+              var highRegString = input.replace(removeDigits, '');
+              var highRegString2 = highRegString.replace("The", "");
+              var splitString = highRegString2.toUpperCase().split(' ');
+              if (splitString.length === 2) {
+                for (var i = 0; i < splitString.length; i++) {
+                  if (splitString[i].length <= 1) {
+                    splitString.splice(i, 1);
+                  }
+                }
+                var splitString2 = splitString[0];
+                var lastLetterOfWord = splitString2.slice(-1);
+              } this.setState ({
+                movies: movies,
+                movieTitle: movies.results[0].title,
+                overview: movies.results[0].overview,
+                backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
+                poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
+                userInput: lastLetterOfWord,
+                score: this.state.score+1,
+                usedMovies: this.state.usedMovies + ' ' + input,
+                // firstLetterOfLastWord: '',
+                // lastLetterOfWord: lastLetterOfWord,
+                relevantLetter: lastLetterOfWord
+              })
+          }
             //if movie title is multiple words, the next movie must
             //use the first letter of the last word of original movie
             else if (input.includes(' ')) {
@@ -78,7 +105,7 @@ class App extends Component {
                 // firstLetterOfLastWord: firstLetterOfLastWord,
                 // lastLetterOfWord: '',
                 relevantLetter: firstLetterOfLastWord
-              })
+              })// for edge cases - ex, the aristocats
             } else { //if movie is one word, use last letter for next turn
               var input = movies.results[0].title
               console.log('input ', input)
