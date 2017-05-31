@@ -9,7 +9,8 @@ class App extends Component {
 
     this.state = {
       movies: [],
-      userInput: ''
+      userInput: '',
+      score: 0
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,7 +43,8 @@ class App extends Component {
                 overview: movies.results[0].overview,
                 backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
-                userInput: firstLetterOfLastWord
+                userInput: firstLetterOfLastWord,
+                score: this.state.score+1
               })
             } else {
               var input = movies.results[0].title
@@ -56,12 +58,23 @@ class App extends Component {
                 overview: movies.results[0].overview,
                 backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
                 poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
-                userInput: lastLetterOfWord
+                userInput: lastLetterOfWord,
+                score: this.state.score+1
               })
             }
             })
-            .catch(err => console.log(err))
-          // }
+            .catch(err => {
+              alert('You lose!')
+              this.setState({
+                movies: '',
+                movieTitle: '',
+                overview: '',
+                backdrop: '',
+                poster: '',
+                userInput: '',
+                score: 0
+              })
+            })
           event.preventDefault();
       }
 
@@ -84,7 +97,8 @@ return (
            <input type="submit" value="Submit" />
          </form>
 
-         <ul>
+         <ul className="App-intro">
+           <li>Score: {this.state.score}</li>
            <li>{this.state.movieTitle}</li>
            <li>{this.state.overview}</li>
            <img className="img-responsive" src={this.state.poster}/>
