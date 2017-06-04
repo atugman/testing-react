@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
+import vhs from './vhs.png'
 import './App.css';
 
 class App extends Component {
@@ -9,12 +10,12 @@ class App extends Component {
 
     this.state = {
       movies: [],
-      userInput: 'A',
+      userInput: 'T',
       score: 0,
       usedMovies: '',
       // firstLetterOfLastWord: '',
       // lastLetterOfWord: ''
-      relevantLetter: 'A'
+      relevantLetter: 'T'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,7 +27,10 @@ class App extends Component {
           userInput: event.target.value
         });
         if (event.target.value[0] !== this.state.relevantLetter) {
-          alert("Hey! You can't change that first letter! Put that " + this.state.relevantLetter + " back in there! Nice try pal!")
+          alert("Hey! You can't change that first letter! Put that " + this.state.relevantLetter + " back in there! Nice try pal!"),
+          this.setState({
+            userInput: this.state.relevantLetter
+          })
         }
       }
 
@@ -36,8 +40,6 @@ class App extends Component {
           .then(response => response.json())
           .then(movies => {
             var input = movies.results[0].title
-            //var userInput = this.state.userInput
-            //var firstLetterOfUserInput = userInput[0]
             //prevents using the same movie twice
             if (this.state.usedMovies.includes(input)) {
               alert('Hey! You already used that one! Game over pal!'),
@@ -47,13 +49,35 @@ class App extends Component {
                 overview: '',
                 backdrop: '',
                 poster: '',
-                userInput: '',
+                userInput: 'A',
                 score: 0,
                 usedMovies: '',
                 // firstLetterOfLastWord: '',
                 // lastLetterOfWord: '',
-                relevantLetter: ''
+                relevantLetter: 'A'
               })
+            }
+            else if (this.state.userInput.includes("The")) {
+              var userInput = this.state.userInput
+              var splitString = userInput.toUpperCase().split(' ');
+              for (var i = 0; i < splitString.length; i++) {
+                if (splitString[0] = "THE") {
+                  alert('Nice try...you know what you did... :)'),
+                  this.setState ({
+                    movies: '',
+                    movieTitle: '',
+                    overview: '',
+                    backdrop: '',
+                    poster: '',
+                    userInput: 'A',
+                    score: 0,
+                    usedMovies: '',
+                    // firstLetterOfLastWord: '',
+                    // lastLetterOfWord: '',
+                    relevantLetter: 'A'
+                  })
+                }
+              }
             }
             else if (input.includes('The')) {
               var removeDigits = /[0-9]/g
@@ -135,12 +159,12 @@ class App extends Component {
                 overview: '',
                 backdrop: '',
                 poster: '',
-                userInput: '',
+                userInput: 'A',
                 score: 0,
                 usedMovies: '',
                 // firstLetterOfLastWord: '',
                 // lastLetterOfWord: '',
-                relevantLetter: ''
+                relevantLetter: 'A'
               })
             })
           event.preventDefault();
@@ -150,11 +174,11 @@ class App extends Component {
 return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Hello World</h2>
+          <img src={vhs} className="App-logo" alt="logo" />
+          <h2>The Movie Game!</h2>
         </div>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Type the name of a movie into the box that starts with the specified letter!
         </p>
 
         <form onSubmit={this.handleSubmit}>
@@ -167,10 +191,16 @@ return (
 
          <ul className="App-intro">
            <li>Score: {this.state.score}</li>
-           <li>{this.state.movieTitle}</li>
-           <li>{this.state.overview}</li>
-           <img className="img-responsive" src={this.state.poster}/>
-           <img className="img-responsive" src={this.state.backdrop}/>
+           <div className="row">
+             <div className="col-6">
+               <li>{this.state.movieTitle}</li>
+               <li>{this.state.overview}</li>
+             </div>
+             <div className="col-6">
+               <img className="Poster img-responsive" src={this.state.poster}/>
+            </div>
+          </div>
+           <img className="Backdrop img-responsive" src={this.state.backdrop}/>
            {/* {this.state.map((movie, index) => (
              <li key={index}>{movie.movies.results[0].title}</li>
            ))} */}
