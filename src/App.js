@@ -201,13 +201,13 @@ return (
          </form>
 
          <div className="App-intro">
-           <div>Score: {this.state.score}</div>
+           <div className="score">Score: {this.state.score}</div>
            <div className="row" id="hello">
-             <div id="hey" className="col-6">
-               <div>{this.state.movieTitle}</div>
+             <div id="hey" className="col-8">
+               <div className="movie-title">{this.state.movieTitle}</div>
                <div className="overview">{this.state.overview}</div>
              </div>
-             <div id="hi" className="col-6">
+             <div id="hi" className="col-4">
                <img className="Poster img-responsive" src={this.state.poster}/>
             </div>
           </div>
