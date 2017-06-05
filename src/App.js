@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import logo from './logo.svg';
 import vhs from './vhs.png'
 import './App.css';
+import '../node_modules/animate.css/animate.min.css'
 
 class App extends Component {
 
@@ -40,8 +41,10 @@ class App extends Component {
           .then(response => response.json())
           .then(movies => {
             var input = movies.results[0].title
+            //document.getElementById("hi").className = "animated slideInRight"
             //prevents using the same movie twice
             if (this.state.usedMovies.includes(input)) {
+              console.log('a');
               alert('Hey! You already used that one! Game over pal!'),
               this.setState({
                 movies: '',
@@ -58,6 +61,7 @@ class App extends Component {
               })
             }
             else if (this.state.userInput.includes("The")) {
+              console.log('b');
               var userInput = this.state.userInput
               var splitString = userInput.toUpperCase().split(' ');
               for (var i = 0; i < splitString.length; i++) {
@@ -79,44 +83,50 @@ class App extends Component {
                 }
               }
             }
-            else if (input.includes('The')) {
-              var removeDigits = /[0-9]/g
-              var highRegString = input.replace(removeDigits, '');
-              var highRegString2 = highRegString.replace("The", "");
-              var splitString = highRegString2.toUpperCase().split(' ');
-              if (splitString.length === 2) {
-                for (var i = 0; i < splitString.length; i++) {
-                  if (splitString[i].length <= 1) {
-                    splitString.splice(i, 1);
-                  }
-                }
-                var splitString2 = splitString[0];
-                var lastLetterOfWord = splitString2.slice(-1);
-              } this.setState ({
-                movies: movies,
-                movieTitle: movies.results[0].title,
-                overview: movies.results[0].overview,
-                backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
-                poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
-                userInput: lastLetterOfWord,
-                score: this.state.score+1,
-                usedMovies: this.state.usedMovies + ' ' + input,
-                // firstLetterOfLastWord: '',
-                // lastLetterOfWord: lastLetterOfWord,
-                relevantLetter: lastLetterOfWord
-              })
-          }
+          //   else if (input.includes('The')) {
+          //     console.log('c');
+          //     var removeDigits = /[0-9]/g
+          //     var highRegString = input.replace(removeDigits, '');
+          //     var highRegString2 = highRegString.replace("The", "");
+          //     var splitString = highRegString2.toUpperCase().split(' ');
+          //     if (splitString.length === 2) {
+          //       for (var i = 0; i < splitString.length; i++) {
+          //         if (splitString[i].length <= 1) {
+          //           splitString.splice(i, 1);
+          //         }
+          //       }
+          //       var splitString2 = splitString[0];
+          //       var lastLetterOfWord = splitString2.slice(-1);
+          //     } this.setState ({
+          //       movies: movies,
+          //       movieTitle: movies.results[0].title,
+          //       overview: movies.results[0].overview,
+          //       backdrop: 'https://image.tmdb.org/t/p/w500' + movies.results[0].backdrop_path,
+          //       poster: 'https://image.tmdb.org/t/p/w500' + movies.results[0].poster_path,
+          //       userInput: lastLetterOfWord,
+          //       score: this.state.score+1,
+          //       usedMovies: this.state.usedMovies + ' ' + input,
+          //       // firstLetterOfLastWord: '',
+          //       // lastLetterOfWord: lastLetterOfWord,
+          //       relevantLetter: lastLetterOfWord
+          //     })
+          // }
             //if movie title is multiple words, the next movie must
             //use the first letter of the last word of original movie
             else if (input.includes(' ')) {
+              console.log('d');
               var removeDigits = /[0-9]/g
               var highRegString = input.toUpperCase().replace(removeDigits, '');
               var splitString = highRegString.split(' ');
+              console.log(splitString);
               if (splitString.includes('')) {
                 splitString.splice(-1, 1);
               }
+              console.log(splitString);
               var lastWord = splitString[splitString.length -1];
+              console.log(lastWord);
               var firstLetterOfLastWord = lastWord[0];
+              console.log(firstLetterOfLastWord);
               this.setState({
                 movies: movies,
                 movieTitle: movies.results[0].title,
@@ -131,6 +141,7 @@ class App extends Component {
                 relevantLetter: firstLetterOfLastWord
               })// for edge cases - ex, the aristocats
             } else { //if movie is one word, use last letter for next turn
+              console.log('e');
               var input = movies.results[0].title
               console.log('input ', input)
               var removeDigits = /[0-9]/g
@@ -173,9 +184,9 @@ class App extends Component {
   render() {
 return (
       <div className="App">
-        <div className="App-header">
+        <div className="App-header animated slideInRight">
           <img src={vhs} className="App-logo" alt="logo" />
-          <h2>The Movie Game!</h2>
+          <h2 className='animated bounce'>The Movie Game!</h2>
         </div>
         <p className="App-intro">
           Type the name of a movie into the box that starts with the specified letter!
@@ -189,14 +200,14 @@ return (
            <input type="submit" value="Submit" />
          </form>
 
-         <ul className="App-intro">
-           <li>Score: {this.state.score}</li>
-           <div className="row">
-             <div className="col-6">
-               <li>{this.state.movieTitle}</li>
-               <li>{this.state.overview}</li>
+         <div className="App-intro">
+           <div>Score: {this.state.score}</div>
+           <div className="row" id="hello">
+             <div id="hey" className="col-6">
+               <div>{this.state.movieTitle}</div>
+               <div className="overview">{this.state.overview}</div>
              </div>
-             <div className="col-6">
+             <div id="hi" className="col-6">
                <img className="Poster img-responsive" src={this.state.poster}/>
             </div>
           </div>
@@ -204,7 +215,7 @@ return (
            {/* {this.state.map((movie, index) => (
              <li key={index}>{movie.movies.results[0].title}</li>
            ))} */}
-         </ul>
+         </div>
 
       </div>
     );

@@ -18,6 +18,10 @@
   font-size: large;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -37,15 +41,26 @@
 }
 
 .Poster {
+  height: 300px;
+  width: 200;
+}
 
+.overview {
+  text-align: left;
 }
 
 .col-6 {
   width: 50%;
+  padding-left: 1.04166666%;
+  float: left;
 }
 
-* {
-  box-sizing: border-box;
+main {
+  padding-top: 100px;
+}
+
+main .row {
+  margin-bottom: 20px;
 }
 
 .row {
